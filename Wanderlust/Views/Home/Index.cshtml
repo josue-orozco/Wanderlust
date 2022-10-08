@@ -1,7 +1,37 @@
-﻿@{
+﻿@model HomeViewModel
+
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <div class="text-center">
     <h1 class="display-4">Hello World!</h1>
+
+    <h3>@ViewBag.VideoLength</h3>
+
+    @*<iframe width="560" height="315" src="@Model.VideoUrl" allow="autoplay" allowfullscreen></iframe>*@
+
+    <div id="embeddedVideo">
+        @await Component.InvokeAsync("EmbeddedVideo")
+    </div>
+
+
+
 </div>
+
+<script>
+    @*setInterval(function () {
+        $.ajax({
+            url: '@Url.Action("ReloadEvents", "Home")',
+            success: function (data)
+            {
+                $("#embeddedVideo").html(data);
+            }
+        })
+    }, 10000); // 10 sec*@
+
+    setInterval(function () {
+        $('#embeddedVideo').load('@Url.Action("ReloadEvents", "Home")');
+    }, @ViewBag.VideoLength)
+
+</script>
